@@ -6,14 +6,8 @@ updates:
     schedule:
       interval: "daily"
 
-  # Maintain dependencies for Dockerfiles used in build pipeline
   - package-ecosystem: docker
-    directory: /docker
-    schedule:
-      interval: "daily"
-
-  - package-ecosystem: docker
-    directory: /test/IntegrationTests/docker
+    directories: ["**/*"]
     schedule:
       interval: "daily"
 
