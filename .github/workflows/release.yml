@@ -121,7 +121,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
-          gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --verify-tag --draft
+          gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --draft
           ./*.zip
           ./otel-dotnet-auto-install.sh
           ./OpenTelemetry.DotNet.Auto.psm1
