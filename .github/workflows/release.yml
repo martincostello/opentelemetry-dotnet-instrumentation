@@ -32,7 +32,9 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ build, build-container, build-nuget-packages ]
     permissions:
+      attestations: write
       contents: write
+      id-token: write
     timeout-minutes: 10
     steps:
 
@@ -100,7 +102,6 @@ jobs:
           )
 
           for file in "${artifacts[@]}"; do
-            echo "Generating checksum for ${file}"
             sha256sum "${file}" >> "./checksums.txt"
           done
 
