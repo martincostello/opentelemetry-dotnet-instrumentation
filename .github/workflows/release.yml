@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/build-nuget-packages.yml
 
   create-release:
-    name: Create GH release
+    name: Create GitHub release
     runs-on: ubuntu-22.04
     needs: [ build, build-container, build-nuget-packages ]
     permissions:
