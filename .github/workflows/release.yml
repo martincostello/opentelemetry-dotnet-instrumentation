@@ -64,8 +64,7 @@ jobs:
           for package in "${packages[@]}"; do
             read -r dir archive <<< "${package}"
             src="./bin-${dir}"
-            (cd "${src}" && zip -qq -r "../opentelemetry-dotnet-instrumentation-${archive}.zip" ./*)
-            rm -rf "${src}"
+            (cd "${src}" && zip -qq -r "../opentelemetry-dotnet-instrumentation-${archive}.zip" ./* && cd ..)
           done
 
       - name: Collect install scripts
@@ -87,11 +86,24 @@ jobs:
       - name: Generate checksums
         shell: bash
         run: |
-          find "." -type f -name '*' | while read -r fname; do
-            echo "Generating checksum for ${fname}"
-            base_name="$(basename "${fname}")"
-            sha256sum "${base_name}" >> "./checksums.txt"
+          set -euo pipefail
+          artifacts=(
+            "opentelemetry-dotnet-instrumentation-linux-glibc-arm64.zip"
+            "opentelemetry-dotnet-instrumentation-linux-glibc-x64.zip"
+            "opentelemetry-dotnet-instrumentation-linux-musl-arm64.zip"
+            "opentelemetry-dotnet-instrumentation-linux-musl-x64.zip"
+            "opentelemetry-dotnet-instrumentation-macos.zip"
+            "opentelemetry-dotnet-instrumentation-nuget-packages.zip"
+            "opentelemetry-dotnet-instrumentation-windows.zip"
+            "otel-dotnet-auto-install.sh"
+            "OpenTelemetry.DotNet.Auto.psm1"
+          )
+
+          for file in "${artifacts[@]}"; do
+            echo "Generating checksum for ${file}"
+            sha256sum "${file}" >> "./checksums.txt"
           done
+
           echo "Verifying checksums"
           sha256sum "./checksums.txt" --check || exit 1
 
